@@ -3,48 +3,43 @@ set -e
 
 echo "=== Installing Stack CLI ==="
 
-# 1. Check for xmake and git
+# 1. Check for xmake
 if ! command -v xmake &>/dev/null; then
-  echo "Error: xmake is required but not installed. Please install xmake first."
+  echo "Error: xmake is required but not installed."
   exit 1
 fi
 
-# 2. Clone the repository into a temporary folder
+# 2. Clone repository into a temporary folder
 TMP_DIR=$(mktemp -d)
 echo "Downloading source files..."
 git clone --quiet https://github.com/JordanGrant3D/stack.git "$TMP_DIR/stack"
 cd "$TMP_DIR/stack"
 
-# 3. Build using xmake
+# 3. Configure and build
 echo "Building project in release mode..."
 xmake f -m release
-xmake build --quiet
+xmake build
 
 # 4. Install binary to ~/.local/bin
 INSTALL_DIR="$HOME/.local/bin"
 mkdir -p "$INSTALL_DIR"
-cp "$(xmake l find-targetfile)" "$INSTALL_DIR/stack"
+cp "$(xmake l 'print(os.iorun("xmake l target:targetfile"))')" "$INSTALL_DIR/stack"
 chmod +x "$INSTALL_DIR/stack"
 
-# 5. Configure ~/.bashrc PATH if needed
+# 5. Add ~/.local/bin to PATH in ~/.bashrc if needed
 RC_FILE="$HOME/.bashrc"
 PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
 
-if [ -f "$RC_FILE" ]; then
-  if ! grep -qF "$PATH_LINE" "$RC_FILE"; then
-    echo "" >>"$RC_FILE"
-    echo "# Added by Stack installer" >>"$RC_FILE"
-    echo "$PATH_LINE" >>"$RC_FILE"
-  fi
+if [ -f "$RC_FILE" ] && ! grep -qF "$PATH_LINE" "$RC_FILE"; then
+  echo -e "\n# Added by Stack installer\n$PATH_LINE" >>"$RC_FILE"
 fi
 
-# 6. Cleanup temporary files
+# 6. Cleanup
 rm -rf "$TMP_DIR"
 
 echo ""
 echo "=================================================="
-echo "Installation complete successfully!"
-echo "Run this command to update your current terminal:"
-echo "    source ~/.bashrc"
+echo "Installation completed successfully!"
+echo "Run 'source ~/.bashrc' to update your terminal."
 echo "After that, you can use 'stack' from anywhere!"
 echo "=================================================="
