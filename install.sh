@@ -17,7 +17,7 @@ cd "$TMP_DIR/stack"
 
 # 3. Build using xmake
 echo "Building project in release mode..."
-xmake f -m release --quiet
+xmake f -m release
 xmake build --quiet
 
 # 4. Install binary to ~/.local/bin
