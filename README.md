@@ -12,7 +12,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/JordanGrant3D/stack/master/i
 To uninstall just run:
 ```
 
-bash <(curl -fsSL https://raw.githubusercontent.com/JordanGrant3D/stack/masr/uninstall.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/JordanGrant3D/stack/master/uninstall.sh)
 ```
 
 
