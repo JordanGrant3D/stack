@@ -15,18 +15,16 @@ echo "Downloading source files..."
 git clone --quiet https://github.com/JordanGrant3D/stack.git "$TMP_DIR/stack"
 cd "$TMP_DIR/stack"
 
-# 3. Configure and build
+# 3. Configure, build, and install directly using xmake
 echo "Building project in release mode..."
 xmake f -m release
 xmake build
 
-# 4. Install binary to ~/.local/bin
 INSTALL_DIR="$HOME/.local/bin"
-mkdir -p "$INSTALL_DIR"
-cp "$(xmake l 'print(os.iorun("xmake l target:targetfile"))')" "$INSTALL_DIR/stack"
-chmod +x "$INSTALL_DIR/stack"
+echo "Installing binary to $INSTALL_DIR..."
+xmake install -o "$INSTALL_DIR"
 
-# 5. Add ~/.local/bin to PATH in ~/.bashrc if needed
+# 4. Add ~/.local/bin to PATH in ~/.bashrc if needed
 RC_FILE="$HOME/.bashrc"
 PATH_LINE='export PATH="$HOME/.local/bin:$PATH"'
 
@@ -34,7 +32,7 @@ if [ -f "$RC_FILE" ] && ! grep -qF "$PATH_LINE" "$RC_FILE"; then
   echo -e "\n# Added by Stack installer\n$PATH_LINE" >>"$RC_FILE"
 fi
 
-# 6. Cleanup
+# 5. Cleanup
 rm -rf "$TMP_DIR"
 
 echo ""
