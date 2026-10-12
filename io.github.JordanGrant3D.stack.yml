@@ -12,9 +12,13 @@ modules:
   - name: xmake
     buildsystem: simple
     build-commands:
-      - wget https://github.com/xmake-io/xmake/releases/download/v2.9.1/xmake-v2.9.1.tar.gz
-      - tar -xzf xmake-v2.9.1.tar.gz
-      - cd xmake-2.9.1 && ./configure && make && make install PREFIX=/app
+      - ./configure --prefix=/app
+      - make
+      - make install
+    sources:
+      - type: archive
+        url: https://github.com/xmake-io/xmake/releases/download/v2.9.1/xmake-v2.9.1.tar.gz
+        sha256: 4f4f34658a2d14cb83e3ef7446bbdf5cd558cd647a57a53c92ff831eb6f987f8
 
   - name: stack
     buildsystem: simple
@@ -25,4 +29,4 @@ modules:
     sources:
       - type: git
         url: https://github.com/JordanGrant3D/stack.git
-        tag: v1.0.1
+        tag: v1.0.2
