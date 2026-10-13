@@ -38,6 +38,6 @@ jobs:
       - name: Publish Snap to Store
         uses: snapcore/action-publish@v1
         with:
-          snapcraft-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+          store_login: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
           snap: stack-sys-monitor_${{ env.VERSION }}_amd64.snap
           release: stable
