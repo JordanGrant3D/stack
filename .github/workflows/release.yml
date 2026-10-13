@@ -3,7 +3,7 @@ name: Build and Publish Snap
 on:
   push:
     tags:
-      - 'v*' # Triggers whenever you push a tag like v1.0.4, v1.0.5, etc.
+      - 'v*' # Triggers on any tag like v1.0.4, v1.0.5
 
 jobs:
   release:
@@ -22,8 +22,13 @@ jobs:
         run: |
           sed -i "s/^version: .*/version: '${{ env.VERSION }}'/" snap/snapcraft.yaml
 
-      - name: Build and Publish Snap
-        uses: canonical/snapcraft-action@v2
+      - name: Build Snap
+        uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - name: Publish Snap to Store
+        uses: snapcore/action-publish@v1
         with:
           snapcraft-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+          snap: ${{ steps.snapcraft.outputs.snap }}
           release: stable
