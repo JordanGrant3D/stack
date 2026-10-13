@@ -3,17 +3,16 @@ name: Build and Publish Snap
 on:
   push:
     tags:
-      - 'v*' # Triggers on tags like v1.0.4, v1.0.5
+      - 'v*' # Triggers whenever you push a tag like v1.0.4, v1.0.5, etc.
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Extract Version from Tag
-        id: get_version
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
@@ -23,13 +22,8 @@ jobs:
         run: |
           sed -i "s/^version: .*/version: '${{ env.VERSION }}'/" snap/snapcraft.yaml
 
-      - name: Build Snap
-        uses: snapcore/action-build@v1
-        id: snapcraft
-
-      - name: Publish Snap to Store
-        uses: snapcore/action-publish@v1
+      - name: Build and Publish Snap
+        uses: canonical/snapcraft-action@v2
         with:
           snapcraft-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-          snap: ${{ steps.snapcraft.outputs.snap }}
           release: stable
