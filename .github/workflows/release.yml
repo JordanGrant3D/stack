@@ -22,13 +22,16 @@ jobs:
         run: |
           sed -i "s/^version: .*/version: '${{ env.VERSION }}'/" snap/snapcraft.yaml
 
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
+
       - name: Build Snap
-        uses: snapcore/action-build@v1
-        id: snapcraft
+        run: |
+          snapcraft pack --destructive-mode
 
       - name: Publish Snap to Store
         uses: snapcore/action-publish@v1
         with:
           snapcraft-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-          snap: ${{ steps.snapcraft.outputs.snap }}
+          snap: stack-sys-monitor_${{ env.VERSION }}_amd64.snap
           release: stable
