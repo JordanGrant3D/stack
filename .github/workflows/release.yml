@@ -1,0 +1,42 @@
+name: Build and Publish Snap
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on any tag like v1.0.5
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract Version from Tag
+        id: get_version
+        run: |
+          # Strip the leading 'v' from the tag (e.g., v1.0.5 -> 1.0.5)
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Building version: $VERSION"
+
+      - name: Update version in snapcraft.yaml
+        run: |
+          # Automatically update the version field inside snap/snapcraft.yaml
+          sed -i "s/^version: .*/version: '${{ env.VERSION }}'/" snap/snapcraft.yaml
+
+      - name: Build and Pack Snap
+        uses: canonical/snapcraft-action@v2
+        with:
+          # Optional: if you aren't using remote building, you can pack locally inside the action
+          # But snapcraft-action can also build automatically. 
+          # Let's run the pack command:
+          args: pack
+
+      - name: Publish Snap to Store
+        uses: canonical/snapcraft-action@v2
+        with:
+          snapcraft-token: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+          release: stable
+          # This uploads the dynamically generated snap file matching your version
+          upload: stack-sys-monitor_${{ env.VERSION }}_amd64.snap

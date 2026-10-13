@@ -1,11 +1,11 @@
-name: stack
+name: stack-sys-monitor
 base: core24
-version: '1.0.4'
+version: '1.0.5'
 summary: C++20 TUI system monitor
 description: |
   A terminal-based system monitoring tool built with FTXUI and C++20.
-grade: devel # Use 'stable' when you are ready to publish
-confinement: classic # Gives full host system and /proc access
+grade: stable # Use 'stable' when you are ready to publish
+confinement: strict # Gives full host system and /proc access
 
 parts:
   stack:
@@ -18,6 +18,7 @@ parts:
 
 apps:
   stack:
-    command: usr/local/bin/stack # Adjust if your CMake installs to a different path
+    command: usr/local/bin/stack
     common-id: io.github.JordanGrant3D.sta
-
+    plugs:
+      - system-observe

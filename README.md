@@ -6,13 +6,13 @@ To install just run:
 
 
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/JordanGrant3D/stack/master/install.sh)
+snap install stack-sys-monitor
 
 ```
 To uninstall just run:
 ```
 
-bash <(curl -fsSL https://raw.githubusercontent.com/JordanGrant3D/stack/master/uninstall.sh)
+snap remove stack-sys-monitor
 ```
 
 

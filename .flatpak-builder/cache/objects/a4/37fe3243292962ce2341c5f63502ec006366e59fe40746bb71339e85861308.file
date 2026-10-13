@@ -1,5 +1,0 @@
-[Runtime]
-name=io.github.JordanGrant3D.stack.Debug
-
-[ExtensionOf]
-ref=app/io.github.JordanGrant3D.stack/x86_64/master
