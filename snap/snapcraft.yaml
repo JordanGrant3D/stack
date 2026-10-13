@@ -1,0 +1,23 @@
+name: stack
+base: core24
+version: '1.0.4'
+summary: C++20 TUI system monitor
+description: |
+  A terminal-based system monitoring tool built with FTXUI and C++20.
+grade: devel # Use 'stable' when you are ready to publish
+confinement: classic # Gives full host system and /proc access
+
+parts:
+  stack:
+    plugin: cmake
+    source: .
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+    build-attributes:
+      - enable-patchelf
+
+apps:
+  stack:
+    command: usr/local/bin/stack # Adjust if your CMake installs to a different path
+    common-id: io.github.JordanGrant3D.sta
+

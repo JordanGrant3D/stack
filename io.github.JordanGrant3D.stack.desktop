@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=Stack
-Comment=Lightweight terminal activity monitor
-Exec=stack
-Icon=io.github.JordanGrant3D.stack
-Terminal=true
-Type=Application
-Categories=System;Monitor;ConsoleOnly;
-Keywords=system;process;task;manager;terminal;monitor;

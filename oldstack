@@ -1,0 +1,32 @@
+app-id: io.github.JordanGrant3D.stack
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: stack
+
+finish-args:
+  - --filesystem=host:ro     # Allows reading /proc, /sys for system stats
+  - --device=all             # Hardware/GPU access if applicable
+
+modules:
+  - name: xmake
+    buildsystem: simple
+    build-commands:
+      - ./configure --prefix=/app
+      - make
+      - make install
+    sources:
+      - type: archive
+        url: https://github.com/xmake-io/xmake/releases/download/v2.9.1/xmake-v2.9.1.tar.gz
+        sha256: a31dbef8c303aea1268068b4b1ac1aec142ac4124c7cb7d9c7eeb57c414f8d15
+
+  - name: stack
+    buildsystem: simple
+    build-commands:
+      - xmake f -m release --prefix=/app
+      - xmake
+      - xmake install
+    sources:
+      - type: git
+        url: https://github.com/JordanGrant3D/stack.git
+        tag: v1.0.4

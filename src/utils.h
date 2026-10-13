@@ -1,7 +1,5 @@
 #pragma once
 #include "process.h"
-#include <ftxui/ftxui.hpp>
-#include <ftxui/component/component.hpp>
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -9,7 +7,9 @@
 #include <algorithm>
 #include <cstdint>
 #include <format>
-
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/component/component.hpp>
+#include <ftxui/dom/canvas.hpp>
 using namespace ftxui;
 
 int safeStoi(const std::string& str, int defaultValue = 0) {
